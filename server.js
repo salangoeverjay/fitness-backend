@@ -146,10 +146,10 @@ app.use((req, res) => {
 
 // Start Server on Render
 app.listen(PORT, HOST, () => {
-    console.log(`\n🚀 FatSecret API Proxy Server running on port ${PORT}`);
-    console.log(`🌍 Public Health Check: /health`);
-    console.log(`🍎 Recognize Food: POST /api/recognize-food`);
-    console.log(`🔑 Token Status: /api/token-status\n`);
+    console.log(` FatSecret API Proxy Server running on port ${PORT}`);
+    console.log(` Public Health Check: /health`);
+    console.log(` Recognize Food: POST /api/recognize-food`);
+    console.log(` Token Status: /api/token-status\n`);
 });
 
 module.exports = app;
