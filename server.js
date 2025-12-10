@@ -6,7 +6,10 @@ const axios = require('axios');
 const FatSecretAuth = require('./auth');
 
 const app = express();
+
+// Render provides PORT dynamically
 const PORT = process.env.PORT || 3000;
+const HOST = "0.0.0.0";
 
 // Initialize FatSecret authentication
 const fatSecretAuth = new FatSecretAuth(
@@ -52,25 +55,18 @@ app.get('/health', (req, res) => {
 // Image Recognition
 app.post('/api/recognize-food', upload.single('image'), async (req, res) => {
     try {
-        // Validate image
         if (!req.file) {
-            
             return res.status(400).json({
                 error: 'No image file provided',
                 message: 'Please upload an image file'
-                
             });
         }
 
         console.log(`Processing image: ${req.file.originalname} (${req.file.size} bytes)`);
 
-        // Get access token
         const accessToken = await fatSecretAuth.getAccessToken();
-
-        // Convert image to base64
         const imageBase64 = req.file.buffer.toString('base64');
 
-        // Payload for FatSecret API
         const payload = {
             image_b64: imageBase64,
             include_food_data: true,
@@ -78,7 +74,6 @@ app.post('/api/recognize-food', upload.single('image'), async (req, res) => {
             language: req.body.language || "en"
         };
 
-        // Send request to FatSecret
         const response = await axios.post(
             'https://platform.fatsecret.com/rest/image-recognition/v2',
             payload,
@@ -92,11 +87,7 @@ app.post('/api/recognize-food', upload.single('image'), async (req, res) => {
         );
 
         console.log("FatSecret Response OK");
-        
-        console.log("🔍 FatSecret FULL RESPONSE:");
-        console.log(JSON.stringify(response.data, null, 2));
 
-        // RETURN RAW RESPONSE (Flutter expects this)
         res.json(response.data);
 
     } catch (error) {
@@ -153,12 +144,12 @@ app.use((req, res) => {
     });
 });
 
-// Start Server
-app.listen(PORT, "0.0.0.0", () => {
+// Start Server on Render
+app.listen(PORT, HOST, () => {
     console.log(`\n🚀 FatSecret API Proxy Server running on port ${PORT}`);
-    console.log(`📍 Health:   http://localhost:${PORT}/health`);
-    console.log(`🍎 Recognize: POST http://localhost:${PORT}/api/recognize-food`);
-    console.log(`🔑 Token:    http://localhost:${PORT}/api/token-status\n`);
+    console.log(`🌍 Public Health Check: /health`);
+    console.log(`🍎 Recognize Food: POST /api/recognize-food`);
+    console.log(`🔑 Token Status: /api/token-status\n`);
 });
 
 module.exports = app;
