@@ -1,0 +1,102 @@
+{
+  "info": {
+    "name": "FatSecret API Proxy",
+    "description": "Collection for testing the FatSecret API Proxy Server",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/health",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["health"]
+        },
+        "description": "Check if the server is running and healthy"
+      }
+    },
+    {
+      "name": "Token Status",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/token-status",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "token-status"]
+        },
+        "description": "Check OAuth token status and expiry time"
+      }
+    },
+    {
+      "name": "Refresh Token",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/refresh-token",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "refresh-token"]
+        },
+        "description": "Force refresh the OAuth token"
+      }
+    },
+    {
+      "name": "Recognize Food Image",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "image",
+              "type": "file",
+              "src": [],
+              "description": "Upload a food image (JPEG, PNG, etc.)"
+            },
+            {
+              "key": "region",
+              "value": "US",
+              "type": "text",
+              "description": "Optional: Region code (US, GB, etc.)",
+              "disabled": true
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/recognize-food",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "recognize-food"]
+        },
+        "description": "Upload a food image to get nutritional information"
+      }
+    },
+    {
+      "name": "Test Error - No Image",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/recognize-food",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "recognize-food"]
+        },
+        "description": "Test error handling when no image is provided"
+      }
+    }
+  ]
+}
